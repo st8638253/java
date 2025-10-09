@@ -1,0 +1,42 @@
+package com.mycompany.app;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public abstract class TransactionCSVReader {
+    // абстрактні класи зі статичними методами для уникнення створення додаткових екземплярів об'єктів
+    private TransactionCSVReader() {
+    }
+
+    public static List<String> readRawData(String filePath) {
+        List<String> lines = new ArrayList<>();
+        try {
+            URL url = new URL(filePath);
+            // Відкриття потоку для читання з URL
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    public static List<Transaction> parseTransactions(List<String> lines) {
+        List<Transaction> transactions = new ArrayList<>();
+        for (String line : lines) {
+            String[] values = line.split(",");
+            Transaction transaction = new Transaction(values[0], Double.parseDouble(values[1]), values[2]);
+            transactions.add(transaction);
+        }
+
+        return transactions;
+    }
+}

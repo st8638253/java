@@ -1,0 +1,5 @@
+com/mycompany/app/Main.class
+com/mycompany/app/Transaction.class
+com/mycompany/app/TransactionCSVReader.class
+com/mycompany/app/TransactionReportGenerator.class
+com/mycompany/app/TransactionAnalyzer.class
