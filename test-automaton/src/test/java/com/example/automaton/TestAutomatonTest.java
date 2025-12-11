@@ -3,28 +3,35 @@ package com.example.automaton;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestAutomatonTest {
 
     @ParameterizedTest
     @CsvSource({
-            "'', 0",              
-            "'A', 0",             
-            "'T', 1",             
-            "'TE', 2",            
-            "'TES', 3",           
-            "'TEST', 4",          
-            "'TT', 1",            
-            "'TA', 0",            
-            "'TET', 1",           
-            "'TEA', 0",           
-            "'TESA', 0",          
-            "'TESTA', 4",         
-            "'abcTESTabc', 4",    
-            "'abcTES', 3"         
+            "'', 0",
+            "'a', 0",
+            "'abc', 0",
+            "'T', 1",
+            "'TE', 2",
+            "'TES', 3",
+            "'TEST', 4",
+            "'abcTESTabc', 4",
+            "'abcTES', 3",
+            "'TESabc', 0",
+            "'TESETES', 3",
+            "'TETEST', 4",
+            "'TTEST', 4",
+            "'TTEESSTT', 1",
+            "'TESTA', 4",
+            "'ATESTB', 4",
+            "'XYZTEST123', 4",
+            "'ABCTEST', 4",
+            "'TESTXYZ', 4",
+            "'TESTTEST', 4",
+            "'XXTESTYYTESTZZ', 4"
     })
-    void processCoversAllTransitions(String input, int expectedStateCode) {
+    void processReturnsExpectedState(String input, int expectedStateCode) {
         TestAutomaton automaton = new TestAutomaton();
         TestAutomaton.State state = automaton.process(input);
         assertEquals(expectedStateCode, state.getCode());
@@ -33,18 +40,31 @@ public class TestAutomatonTest {
     @ParameterizedTest
     @CsvSource({
             "'', false",
-            "'A', false",
+            "'a', false",
             "'TES', false",
-            "'TET', false",
             "'TEA', false",
             "'TESA', false",
+            "'TESS', false",
+            "'TEAST', false",
+            "'TXEST', false",
+            "'TETS', false",
+            "'TTES', false",
+            "'ETES', false",
+            "'TESETES', false",
+            "'TTEESSTT', false",
             "'TEST', true",
             "'abcTESTabc', true",
-            "'TTTEST', true",
+            "'TETEST', true",
+            "'TTEST', true",
             "'TESTA', true",
-            "'TETEST', true"
+            "'ATESTB', true",
+            "'XYZTEST123', true",
+            "'ABCTEST', true",
+            "'TESTXYZ', true",
+            "'TESTTEST', true",
+            "'XXTESTYYTESTZZ', true"
     })
-    void hasTestFunctionalCases(String input, boolean expected) {
+    void hasTestDetectsPresenceCorrectly(String input, boolean expected) {
         TestAutomaton automaton = new TestAutomaton();
         assertEquals(expected, automaton.hasTest(input));
     }

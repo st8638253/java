@@ -50,15 +50,15 @@ public class TestAutomaton {
     }
 
     private void step(char c) {
-        if (state == State.F) {
-            return;
-        }
         switch (state) {
             case S0:
                 if (c == 'T') {
                     state = State.S1;
+                } else {
+                    state = State.S0;
                 }
                 break;
+
             case S1:
                 if (c == 'E') {
                     state = State.S2;
@@ -68,6 +68,7 @@ public class TestAutomaton {
                     state = State.S0;
                 }
                 break;
+
             case S2:
                 if (c == 'S') {
                     state = State.S3;
@@ -77,6 +78,7 @@ public class TestAutomaton {
                     state = State.S0;
                 }
                 break;
+
             case S3:
                 if (c == 'T') {
                     state = State.F;
@@ -84,7 +86,13 @@ public class TestAutomaton {
                     state = State.S0;
                 }
                 break;
+
+            case F:
+                state = State.F;
+                break;
+
             default:
+                state = State.S0;
                 break;
         }
     }
